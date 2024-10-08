@@ -71,18 +71,18 @@ resource "terraform_data" "add_secrets" {
   provisioner "local-exec" {
 
     # interpreter = [ "bash", "-c" ]
-    interpreter = ["PowerShell", "-Command"]
+    #interpreter = ["PowerShell", "-Command"]
 
     command = <<-EOT
     
-        az containerapp secret set `
-          --name ${azurerm_container_app.aca_app.name} `
-          --resource-group ${azurerm_resource_group.rg.name} `
+        az containerapp secret set \
+          --name ${azurerm_container_app.aca_app.name} \
+          --resource-group ${azurerm_resource_group.rg.name} \
           --secrets my-secret-02=keyvaultref:${azurerm_key_vault_secret.secret_02.versionless_id},identityref:${azurerm_user_assigned_identity.identity_aca.id}
 
-          az containerapp update `
-          --name ${azurerm_container_app.aca_app.name} `
-          --resource-group ${azurerm_resource_group.rg.name} `
+          az containerapp update \
+          --name ${azurerm_container_app.aca_app.name} \
+          --resource-group ${azurerm_resource_group.rg.name} \
           --set-env-vars "MY_SECRET_02=secretref:my-secret-02"
          
       EOT
